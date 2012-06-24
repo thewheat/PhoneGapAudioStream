@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Cordova</title>
+	<script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+	<script type="text/javascript" charset="utf-8" src="jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+	
+	// using plain Javascript
+	function onLoad() {
+		document.addEventListener("deviceready", onDeviceReady, false);
+	}
+
+	// using jQuery
+	$(document).ready(function(){
+		$("#status").text("The app has loaded");
+	});
+
+	function onDeviceReady(){
+	}
+    
+    ////////////////////////////////////////////////////
+    // streaming audio - 1
+	
+	var mediaPlaying = false;
+    var myAudio = null;
+    function mediaPlay() {
+		if (!mediaPlaying) {
+	   	    if (myAudio != null) {
+				myAudio.release();
+			}
+			var URL_STREAM = document.getElementById('mediaStation').value;
+			myAudio = new Media(URL_STREAM);
+            myAudio.play();	
+			mediaPlaying = true;	
+			document.getElementById('play').src = "images/stop.png";
+			updateStatus("Loading stream...");
+		} else {
+			myAudio.stop();
+			mediaPlaying = false;
+            document.getElementById('play').src = "images/play.png";    
+			updateStatus("Stream has been stopped");
+		}
+    }
+
+	function updateStatus(str)
+	{
+		$("#status").text(str);
+	}
+    // streaming audio - 0
+    ////////////////////////////////////////////////////
+    
+    </script>
+</head>
+<body onload="onLoad()">
+	<div class="section" id="s_streaming">
+		<h3><a href="http://kristal.fm/"><img src="images/kfm.png"></a></h3>
+		<h3><a href="http://http://www.ubdfm.blogspot.com/"><img src="images/ubdfm.png"></a></h3>
+		<div>
+			Select a station:
+			<select id="mediaStation">
+				<option value="http://202.152.84.115:801/kfm">KristalFM</option>
+				<option value="http://202.160.1.55:8000">UBDFM</option>
+			</select>
+		</div>
+		<a href="#" onclick="mediaPlay()" id="lnk_play"><img id="play" src="images/play.png"></a>
+		<div id="status"></div>	
+		<div>
+			<a href="http://kristal.fm/">Kristal FM</a> | <a href="http://www.ubdfm.blogspot.com">UBD FM</a>
+		</div>
+	</div>
+	
+</body>
+</html>
